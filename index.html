@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎂</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Times New Roman', Times, serif;}
+    html,body{scroll-behavior:smooth;}
+
+    /* SECTION 1 – Rainbow HPBD */
+    #sec1{
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(90deg, #e65c5c, #ffc353, #ffff46, #2fcc2f, #59ffff, #6464ff, #ff9fff);
+      animation:bgmove 4s linear infinite;
+      
+    }
+    @keyframes bgmove{
+        0%{background-position:0 0;}
+        100%{background-position:100vw 0;}}
+    .title-big{
+      font-size:80px;
+      font-weight:900;
+      color:white;
+      text-shadow:0 0 20px rgba(0,0,0,0.4);
+    }
+
+    /* SECTION 2 – GIF + Messages */
+    #sec2{
+      height:100vh;
+      display:flex;
+      background:#ffd6e9;
+      padding:40px;
+      gap:30px;
+      align-items:center;
+    }
+    .gif-box{
+      width:50%;height:80%;border-radius:20px;overflow:hidden;box-shadow:0 0 20px rgba(0,0,0,0.15);
+    }
+    .gif-box img{
+      width:100%;height:100%;object-fit:contain;
+    }
+    .messages{
+      width:50%;height:80%;background:white;border-radius:20px;padding:20px;overflow:auto;box-shadow:0 0 20px rgba(0,0,0,0.1);
+    }
+    .msg{background:#ffe2f2;padding:10px;margin-bottom:10px;border-radius:12px;font-size:18px;}
+
+    /* SECTION 3 – Be Brave */
+    #sec3{
+      height:100vh;
+      background:#0f1724;
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:20px;
+      position:relative;
+      overflow:hidden;
+    }
+    .brave-title{
+        font-size:60px;
+        font-weight:900;}
+    .btn{
+        padding:12px 20px;
+        border:none;
+        border-radius:12px;
+        font-size:18px;
+        font-weight:600;
+        cursor:pointer;}
+    .btn-rose{
+        background:#ff9acb;
+        color:#111;}
+
+    /* CONFETTI CANVAS */
+    #confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+  </style>
+</head>
+<body>
+
+  <!-- SECTION 1 -->
+  <section id="sec1">
+    <div class="title-big">HAPPI BIRTHDAY SISTA 🎉</div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="sec2">
+    <div class="gif-box">
+      <img id="gif" src="./asset/Sharing my pixel art.gif" alt="linh gif" />
+    </div>
+
+    <div class="messages" id="msg-box">
+      <div class="msg">You are enthusiatic. You have passion to follow. You have people you luv</div>
+      <div class="msg">You are not alone. I'm always by your side</div>
+      <div class="msg">Never doubt your worth.</div>
+      <div class="msg">Oh ooh o Ốhhhhhh</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="sec3">
+    <canvas id="confetti"></canvas>
+    <div class="brave-title">Don't be harsh on yourself. And fulfill your life 💗 </div>
+    <button class="btn btn-rose" id="play-voice">Play Encouragement</button>
+  </section>
+
+  <script>
+    /* --- Confetti Animation --- */
+    const c = document.getElementById('confetti');
+    const ctx = c.getContext('2d');
+    function size(){c.width = innerWidth; c.height = innerHeight;}
+    size(); addEventListener('resize', size);
+
+    class Confetti{
+      constructor(){this.reset();}
+      reset(){this.x=Math.random()*c.width;this.y=-20;this.vx=Math.random()*2-1;this.vy=2+Math.random()*3;this.size=6+Math.random()*6;this.color=`hsl(${Math.random()*360},100%,70%)`;}
+      update(){this.x+=this.vx;this.y+=this.vy;if(this.y>c.height) this.reset();}
+      draw(){ctx.fillStyle=this.color;ctx.fillRect(this.x,this.y,this.size,this.size);}
+    }
+    const pieces = Array.from({length:120},()=>new Confetti());
+    function animate(){ctx.clearRect(0,0,c.width,c.height);pieces.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);} animate();
+
+    /* --- TTS Voice Message --- */
+    document.getElementById('play-voice').addEventListener('click', () => {
+      const msg = new SpeechSynthesisUtterance("Happy birthday. You are brave, strong, and you are never alone. Believe in yourself — you are veri cute, love you ma.");
+      msg.rate = 1; msg.pitch = 1;
+      speechSynthesis.cancel(); speechSynthesis.speak(msg);
+    });
+  </script>
+
+</body>
+</html>
